@@ -1,6 +1,7 @@
 package com.planetgallium.kitpvp;
 
 import com.planetgallium.kitpvp.game.Infobase;
+import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,6 +45,8 @@ public class Game extends JavaPlugin implements Listener {
 		database = new Infobase(this);
 		arena = new Arena(this, resources);
 
+		AliasCommand aliasCommand = new AliasCommand(this);
+
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(this, this);
 		pm.registerEvents(new EventListener(this), this);
@@ -58,7 +61,7 @@ public class Game extends JavaPlugin implements Listener {
 		pm.registerEvents(new SoupListener(this), this);
 		pm.registerEvents(new ChatListener(this), this);
 		pm.registerEvents(new SignListener(this), this);
-		pm.registerEvents(new AliasCommand(this), this);
+		pm.registerEvents(aliasCommand, this);
 		pm.registerEvents(new AbilityListener(this), this);
 		pm.registerEvents(new TrackerListener(this), this);
 		pm.registerEvents(new MenuListener(this), this);
@@ -68,6 +71,9 @@ public class Game extends JavaPlugin implements Listener {
 		MainCommand mainCommand = new MainCommand(this);
 		pm.registerEvents(mainCommand, this);
 		getCommand("kitpvp").setExecutor(mainCommand);
+		if (getConfig().getBoolean("Commands.Alias.Spawn")) {
+			Objects.requireNonNull(getCommand("spawn"), "spawn").setExecutor(aliasCommand);
+		}
 
 		new Metrics(this);
 		
