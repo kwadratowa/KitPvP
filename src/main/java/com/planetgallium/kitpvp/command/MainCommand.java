@@ -19,6 +19,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -504,6 +506,13 @@ public class MainCommand implements CommandExecutor, Listener {
 
         p.getInventory().setArmorContents(null);
         p.getInventory().clear();
+        p.setItemOnCursor(null);
+
+        Inventory topInventory = p.getOpenInventory().getTopInventory();
+        // clear items stored in player's crafting
+        if (topInventory.getType() == InventoryType.CRAFTING && p.equals(topInventory.getHolder())) {
+            topInventory.clear();
+        }
 
         Toolkit.setMaxHealth(p, 20);
         if (!p.isDead()) {
