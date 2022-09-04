@@ -142,6 +142,11 @@ public class Kit {
             player.getInventory().setItemInOffHand(offhand);
         }
 
+        // Clear player effects before applying new ones //kwadratowa
+        for (PotionEffect potionEffect : player.getActivePotionEffects()) {
+            player.removePotionEffect(potionEffect.getType());
+        }
+
         effects.stream().forEach(effect -> player.addPotionEffect(effect));
 
     }
