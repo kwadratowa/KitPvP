@@ -30,11 +30,13 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
                             <pattern>com.cryptomorin.xseries</pattern>
@@ -59,13 +61,19 @@
                         </filter>
                     </filters>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+<!--                            <outputFile>/Users/nico/Developer/Spigot/Latest/plugins/${project.artifactId}.jar</outputFile>-->
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -100,7 +108,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.17-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
